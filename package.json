@@ -1,0 +1,27 @@
+{
+  "name": "level-auto-batch",
+  "version": "0.0.0",
+  "description": "collect all puts and dels in the same tick in one batch",
+  "main": "auto-batch.js",
+  "scripts": {
+    "test": "tap test.js"
+  },
+  "keywords": [
+    "level"
+  ],
+  "author": "David Björklund <david.bjorklund@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "tap": "^0.4.9",
+    "level-test": "^1.6.2"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kesla/level-auto-batch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kesla/level-auto-batch/issues"
+  },
+  "homepage": "https://github.com/kesla/level-auto-batch"
+}
