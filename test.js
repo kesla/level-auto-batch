@@ -58,8 +58,6 @@ test('unit test', function (t) {
   })
 })
 
-return
-
 test('integration test', function (t) {
   var db = level('integration')
     , auto = AutoBatch({
