@@ -1,6 +1,6 @@
 {
   "name": "level-auto-batch",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "collect all puts and dels in the same tick in one batch",
   "main": "auto-batch.js",
   "scripts": {
