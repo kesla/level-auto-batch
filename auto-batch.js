@@ -6,10 +6,7 @@ var AutoBatch = function (db) {
       this.batch = null
       this.callbacks = null
     }
-  , Sub = function (auto, sub) {
-      this.auto = auto
-      this.sub = sub
-    }
+  , Sub = require('./sub')
 
 AutoBatch.prototype._prepare = function () {
   var self = this
@@ -29,6 +26,10 @@ AutoBatch.prototype._prepare = function () {
       self.batch = null
     })
   }  
+}
+
+AutoBatch.prototype.get = function (key, opts, callback) {
+  this.db.get(key, opts, callback)
 }
 
 AutoBatch.prototype.del = function (key, opts, callback) {
@@ -59,16 +60,16 @@ AutoBatch.prototype.sublevel = function (name) {
   return new Sub(this, this.db.sublevel(name))
 }
 
-Sub.prototype.del = function (key, opts, callback) {
-  this.auto.del(this.sub.prefix(key), opts, callback)
+AutoBatch.prototype.createReadStream = function (opts) {
+  return this.db.createReadStream(opts)
 }
 
-Sub.prototype.put = function (key, value, opts, callback) {
-  this.auto.put(this.sub.prefix(key), value, opts, callback)
+AutoBatch.prototype.createKeyStream = function (opts) {
+  return this.db.createKeyStream(opts)
 }
 
-Sub.prototype.sublevel = function (name) {
-  return new Sub(this.auto, this.sub.sublevel(name))
+AutoBatch.prototype.createValueStream = function (opts) {
+  return this.db.createValueStream(opts)
 }
 
 module.exports = AutoBatch

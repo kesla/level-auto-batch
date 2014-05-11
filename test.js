@@ -110,3 +110,53 @@ test('sublevel support', function (t) {
 
   auto.sublevel('one').sublevel('two').put('hej', 'hopp', function () {})
 })
+
+test('get and streams', function (t) {
+  t.plan(8)
+
+  var db = subLevel(level('get-streams'))
+    , auto = AutoBatch(db)
+    , sub = auto.sublevel('child')
+
+  auto.put('foo', 'bar', function () {
+    auto.get('foo', function (err, val) {
+      t.equal(val, 'bar')
+    })
+
+    auto.createReadStream()
+      .once('data', function (obj) {
+        t.deepEqual(obj, { key: 'foo', value: 'bar' })
+      })
+
+    auto.createKeyStream()
+      .once('data', function (key) {
+        t.equal(key, 'foo')
+      })
+
+    auto.createValueStream()
+      .once('data', function (val) {
+        t.equal(val, 'bar')
+      })
+  })
+
+  sub.put('hello', 'world', function () {
+    sub.get('hello', function (err, val) {
+      t.equal(val, 'world')
+    })
+
+    sub.createReadStream()
+      .once('data', function (obj) {
+        t.deepEqual(obj, { key: 'hello', value: 'world' })
+      })
+
+    sub.createKeyStream()
+      .once('data', function (key) {
+        t.equal(key, 'hello')
+      })
+
+    sub.createValueStream()
+      .once('data', function (val) {
+        t.equal(val, 'world')
+      })
+  })
+})
