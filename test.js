@@ -1,5 +1,6 @@
 var test = require('tap').test
   , level = require('level-test')()
+  , subLevel = require('level-sublevel')
 
   , AutoBatch = require('./auto-batch')
 
@@ -83,4 +84,29 @@ test('integration test', function (t) {
     auto.del('hello', function () {})
 
   })
+})
+
+test('sublevel support', function (t) {
+  var db = subLevel(level('sublevel-test'))
+    , auto = AutoBatch(db)
+
+  t.plan(3)
+
+  auto.sublevel('foo').put('bar', 'OMG', function () {
+    db.sublevel('foo').get('bar', function (err, value) {
+      t.equal(value, 'OMG')
+    })
+
+    db.get('bas', function (err, value) {
+      t.equal(value, 'ZING')
+    })
+
+    db.sublevel('one').sublevel('two').get('hej', function (err, value) {
+      t.equal(value, 'hopp')
+    })
+  })
+
+  auto.put('bas', 'ZING', function () {})
+
+  auto.sublevel('one').sublevel('two').put('hej', 'hopp', function () {})
 })
